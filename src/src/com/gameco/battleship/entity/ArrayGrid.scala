@@ -19,4 +19,10 @@ case class ArrayGrid[A: ClassTag](initVal: A, width: Int, height: Int) extends G
   def set(x: Int, y: Int, value: A): Unit = {
     values(x)(y) = value
   }
+
+  override def copyWithChange(position: Position, changeTo: A): Grid[A] = {
+    val copiedGrid: ArrayGrid[A] = this.copy()
+    copiedGrid.set(position.x, position.y, changeTo)
+    copiedGrid
+  }
 }

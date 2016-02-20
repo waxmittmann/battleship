@@ -2,18 +2,29 @@ package com.gameco.battleship.game
 
 import com.gameco.battleship.entity.{Grid, Position}
 
-case class PlayerState(playerStatus: Grid[GridStatus]) {
-  def hitLocation(attackPosition: Position): PlayerState = {
-    playerStatus.get(attackPosition.x, attackPosition.y) match {
-      case Sea => PlayerState(playerStatus.copyWithChange(attackPosition, AttackedSea))
-      case (UndamagedShipEnd | UndamagedShipMidsection) => {
-        for (i <- 0 to Integer.MAX_VALUE) { //Todo: Do infinite... though for our sizes this would work =p
-          val status: GridStatus = playerStatus.get(attackPosition.x - i, attackPosition.y)
-          if (attackPosition.x - i >= 0 && status == UndamagedShipEnd)
-        }
+case class PlayerState(playerShips: Grid[Option[Ship]], isAttacked: Grid[Boolean]) {
 
-        PlayerState(playerStatus.copyWithChange(attackPosition, AttackedSea))
+  def setAttacked(attackPosition: Position): (ActionResult, PlayerState) = {
+    val newState = this.copy(isAttacked = isAttacked.copyWithChange(attackPosition, true))
+    val actionResult: ActionResult = playerShips.get(attackPosition.x, attackPosition.y).fold[ActionResult](Miss)(ship => {
+      if (isShipSunk(ship, newState)) {
+        Sunk
+      } else {
+        Hit
+      }
+    })
+    (actionResult, newState)
+  }
+
+  private def isShipSunk(ship: Ship, playerState: PlayerState): Boolean = {
+    for (l <- 0 to ship.size) {
+      if (ship.isHorizontal && !playerState.isAttacked.get(ship.x + l, ship.y)) {
+        return false
+      } else if (!ship.isHorizontal && !playerState.isAttacked.get(ship.x, ship.y + l)) {
+        return false
       }
     }
+    return true
   }
+
 }
