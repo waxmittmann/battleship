@@ -1,10 +1,11 @@
 package com.gameco.battleship.game
 
 import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
-import com.gameco.battleship.game.BattleshipGame.ShipPositionOrientation
+import com.gameco.battleship.game.BattleshipGame.{ResultAndNewState, ShipPositionOrientation}
 
 object BattleshipGame {
   type ShipPositionOrientation = (Position, Boolean)
+  type ResultAndNewState = (ActionResult, BattleshipGame)
 }
 
 sealed trait ActionError
@@ -12,21 +13,23 @@ case object OutsideBounds extends ActionError
 case object AlreadyHit extends ActionError
 case object GameOver extends ActionError
 
-sealed trait TurnResult
-case object Win extends TurnResult
-case object Hit extends TurnResult
-case object Sunk extends TurnResult
-case object Miss extends TurnResult
+sealed trait ActionResult
+case object Win extends ActionResult
+case object Hit extends ActionResult
+case object Sunk extends ActionResult
+case object Miss extends ActionResult
 
 sealed trait GridStatus
-case object LocationNotHit extends GridStatus
-case object LocationMiss extends GridStatus
-case object LocationHit extends GridStatus
-case object LocationSunk extends GridStatus
+case object UndamagedShipMidsection extends GridStatus
+case object UndamagedShipEnd extends GridStatus
+case object DamagedShip extends GridStatus
+case object SunkShip extends GridStatus
+case object AttackedSea extends GridStatus
+case object Sea extends GridStatus
 
 case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameState, isPlayerATurn: Boolean) {
 
-  def takeTurn(attackPosition: Position): Either[ActionError, TurnResult] = {
+  def takeTurn(attackPosition: Position): Either[ActionError, ActionResult] = {
     val (myPlayerState, opposingPlayerState) =
       if (isPlayerATurn) {
         (gameState.playerA, gameState.playerB)
@@ -37,31 +40,30 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
   }
 
   private def takeTurnForPlayer(attackPosition: Position, myPlayerState: PlayerState,
-                        opposingPlayerState: PlayerState): Either[ActionError, TurnResult] = {
+                        opposingPlayerState: PlayerState): Either[ActionError, ResultAndNewState] = {
     if (attackPosition.x < 0 || attackPosition.x >= width || attackPosition.y < 0 || attackPosition.y >= height) {
       Left(OutsideBounds)
     } else {
       val statusAtAttackPosition: GridStatus = opposingPlayerState.playerStatus.get(attackPosition.x, attackPosition.y)
 
-      statusAtAttackPosition match {
-        case LocationHit => Left(AlreadyHit)
-        case LocationSunk => Left(AlreadyHit)
-        case LocationMiss => Left(AlreadyHit)
-        case LocationNotHit => Right({
-          if (opposingPlayerState.playerStatus.get(attackPosition.x, attackPosition.y))
-
-          val hadHit = HitDetection.isHit(attackPosition, opposingPlayerState.playerStatus)
-
-          if (hadHit) {
-            Right(Hit)
-          } else {
-            Right(Miss)
-          }
-        })
+      val result = statusAtAttackPosition match {
+        case (DamagedShip | AttackedSea | SunkShip) => Left(AlreadyHit)
+        case (UndamagedShipMidsection | UndamagedShipEnd | Sea) => Right(Hit, createResult(attackPosition))
       }
 
+      result
     }
   }
+
+  def createResult(attackPosition: Position) = {
+    //Todo: Having to know this again sucks.
+    if (isPlayerATurn) {
+      this.copy(gameState = gameState.copy(playerB = gameState.playerB.hitLocation(attackPosition)), isPlayerATurn = !isPlayerATurn)
+    } else {
+      this.copy(gameState = gameState.copy(playerA = gameState.playerA.hitLocation(attackPosition)), isPlayerATurn = !isPlayerATurn)
+    }
+  }
+
 
   def getPlayerPosition(): Grid[GridStatus] = ???
   def getOpponentPosition(): Grid[GridStatus] = ???
