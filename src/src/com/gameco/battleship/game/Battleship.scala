@@ -1,10 +1,9 @@
 package com.gameco.battleship.game
 
-import com.gameco.battleship.entity.{Grid, Position}
+import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
 import com.gameco.battleship.game.BattleshipGame.ShipPositionOrientation
 
 object BattleshipGame {
-  type TurnResult = (TurnResult, BattleshipGame)
   type ShipPositionOrientation = (Position, Boolean)
 }
 
@@ -18,6 +17,12 @@ case object Win extends TurnResult
 case object Hit extends TurnResult
 case object Sunk extends TurnResult
 case object Miss extends TurnResult
+
+sealed trait GridStatus
+case object LocationNotHit extends GridStatus
+case object LocationMiss extends GridStatus
+case object LocationHit extends GridStatus
+case object LocationSunk extends GridStatus
 
 case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameState, isPlayerATurn: Boolean) {
 
@@ -33,23 +38,42 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
 
   private def takeTurnForPlayer(attackPosition: Position, myPlayerState: PlayerState,
                         opposingPlayerState: PlayerState): Either[ActionError, TurnResult] = {
-    if (myPlayerState.playerHits.exists(attackPosition == _)) {
-      Left(AlreadyHit)
-    } else if (attackPosition.x < 0 || attackPosition.x >= width || attackPosition.y < 0 || attackPosition.y >= height) {
+    if (attackPosition.x < 0 || attackPosition.x >= width || attackPosition.y < 0 || attackPosition.y >= height) {
       Left(OutsideBounds)
     } else {
-      val hadHit = HitDetection.isHit(attackPosition, opposingPlayerState.playerShips)
+      val statusAtAttackPosition: GridStatus = opposingPlayerState.playerStatus.get(attackPosition.x, attackPosition.y)
 
-      if (hadHit) {
-        Right(Hit)
-      } else {
-        Right(Miss)
+      statusAtAttackPosition match {
+        case LocationHit => Left(AlreadyHit)
+        case LocationSunk => Left(AlreadyHit)
+        case LocationMiss => Left(AlreadyHit)
+        case LocationNotHit => Right({
+          if (opposingPlayerState.playerStatus.get(attackPosition.x, attackPosition.y))
+
+          val hadHit = HitDetection.isHit(attackPosition, opposingPlayerState.playerStatus)
+
+          if (hadHit) {
+            Right(Hit)
+          } else {
+            Right(Miss)
+          }
+        })
       }
+
     }
   }
-  
-  def getPlayerPosition(): Grid = ???
-  def getOpponentPosition(): Grid = ???
 
-  def isPlayerAWinner(): Option[Boolean] = ???
+  def getPlayerPosition(): Grid[GridStatus] = ???
+  def getOpponentPosition(): Grid[GridStatus] = ???
+
+  private def getPositionForPlayer(myPlayerState: PlayerState, opposingPlayerState: PlayerState): Grid[GridStatus] = {
+    val result: ArrayGrid[GridStatus] = ArrayGrid(LocationNotHit, width, height)
+
+    for (hit <- opposingPlayerState.playerHits) {
+      result.set(hit.x, hit.y)
+    }
+
+  }
+
+    def isPlayerAWinner(): Option[Boolean] = ???
 }

@@ -1,10 +1,9 @@
 package com.gameco.battleship.entity
 
-/**
- * Created by maxwittman on 20/02/2016.
- */
-case class ArrayGrid[A](initVal: A, width: Int, height: Int) extends Grid[A] {
-  val values: Array[Array[A]] = Array.ofDim(width, height)
+import scala.reflect.ClassTag
+
+case class ArrayGrid[A: ClassTag](initVal: A, width: Int, height: Int) extends Grid[A] {
+  val values: Array[Array[A]] = Array.ofDim[A](width, height)
   for {
     row <- 0 until height
     col <- 0 until width

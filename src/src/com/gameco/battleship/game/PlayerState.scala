@@ -1,6 +1,5 @@
 package com.gameco.battleship.game
 
-/**
- * Created by maxwittman on 20/02/2016.
- */
-case class PlayerState(playerShips: Ships, playerHits: Seq[Position])
+import com.gameco.battleship.entity.{Grid, Position}
+
+case class PlayerState(playerStatus: Grid[GridStatus])
