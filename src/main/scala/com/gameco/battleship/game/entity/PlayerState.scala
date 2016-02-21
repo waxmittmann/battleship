@@ -2,13 +2,14 @@ package com.gameco.battleship.game.entity
 
 import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
 
-case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attackedPositions: Grid[Boolean]) {
+case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attackedPositions: Grid[Boolean]) {
   if (attackedPositions.getHeight != height || attackedPositions.getWidth != width)
     throw new RuntimeException("Grid dimensions do not match state dimensions")
 
   val playerGrid: Grid[Option[Ship]] = createGridFromShips()
 
-  def createGridFromShips(): Grid[Option[Ship]] = {
+  //Todo: Test this
+  private def createGridFromShips(): Grid[Option[Ship]] = {
     val grid = ArrayGrid.empty[Option[Ship]](None, width, height)
 
     val setGridPositionToShip = (x: Int, y: Int, ship: Ship) => {

@@ -5,14 +5,12 @@ import org.specs2.mutable.Specification
 
 class PlayerStateSpec extends Specification {
 
-  //isAttacked, setAttacked, isAllSunk
-
   "Player state " should {
 
     "isAllSunk" should {
       "return true if all ships are hit" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(6, 2, 3, true))
+        val ships: List[Ship] = List(Ship(6, 2, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         attackedSoFar.set(6, 2, true)
         attackedSoFar.set(7, 2, true)
@@ -28,7 +26,7 @@ class PlayerStateSpec extends Specification {
 
       "return false if all some ships are not hit" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(6, 2, 3, true))
+        val ships: List[Ship] = List(Ship(6, 2, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         attackedSoFar.set(6, 2, true)
         attackedSoFar.set(8, 2, true)
@@ -42,21 +40,11 @@ class PlayerStateSpec extends Specification {
       }
     }
 
-//    "creation" in {
-//      "should fail if the attack grid dimensions do not match the state dimensions" in {
-//        false
-//      }
-//
-//      "should fail if a ship is outside the bounds of the player state" in {
-//        false
-//      }
-//    }
-
     "isAttacked" in {
       "should return 'true' if the grid has already been attacked at that location" in {
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         attackedSoFar.set(2, 3, true)
-        val playerState = PlayerState(10, 10, Seq(), attackedSoFar)
+        val playerState = PlayerState(10, 10, List(), attackedSoFar)
         val attackPosition: Position = Position(2, 3)
 
         //When
@@ -68,7 +56,7 @@ class PlayerStateSpec extends Specification {
 
       "should return 'false' if the grid has not yet been attacked at that location" in {
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
-        val playerState = PlayerState(10, 10, Seq(), attackedSoFar)
+        val playerState = PlayerState(10, 10, List(), attackedSoFar)
         val attackPosition: Position = Position(2, 3)
 
         //When
@@ -83,7 +71,7 @@ class PlayerStateSpec extends Specification {
       
       "should hit a horizontal ship at the left end of the ship" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(1, 1, 3, true))
+        val ships: List[Ship] = List(Ship(1, 1, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(1, 1)
@@ -100,7 +88,7 @@ class PlayerStateSpec extends Specification {
 
       "should hit a horizontal ship in the middle" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(1, 1, 3, true))
+        val ships: List[Ship] = List(Ship(1, 1, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(2, 1)
@@ -117,7 +105,7 @@ class PlayerStateSpec extends Specification {
 
       "should hit a horizontal ship at the right end of the ship" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(1, 1, 3, true))
+        val ships: List[Ship] = List(Ship(1, 1, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 1)
@@ -134,7 +122,7 @@ class PlayerStateSpec extends Specification {
 
       "should miss a horizontal ship when hitting left of it" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(1, 1, 3, true))
+        val ships: List[Ship] = List(Ship(1, 1, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(0, 1)
@@ -151,7 +139,7 @@ class PlayerStateSpec extends Specification {
 
       "should miss a horizontal ship when hitting right of it" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(1, 1, 3, true))
+        val ships: List[Ship] = List(Ship(1, 1, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(4, 1)
@@ -168,7 +156,7 @@ class PlayerStateSpec extends Specification {
 
       "should hit a vertical ship at the bottom end of the ship" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(3, 4, 3, false))
+        val ships: List[Ship] = List(Ship(3, 4, 3, false))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 4)
@@ -185,7 +173,7 @@ class PlayerStateSpec extends Specification {
 
       "should hit a vertical ship in the middle" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(3, 4, 3, false))
+        val ships: List[Ship] = List(Ship(3, 4, 3, false))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 5)
@@ -202,7 +190,7 @@ class PlayerStateSpec extends Specification {
 
       "should hit a vertical ship at the top end of the ship" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(3, 4, 3, false))
+        val ships: List[Ship] = List(Ship(3, 4, 3, false))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 6)
@@ -219,7 +207,7 @@ class PlayerStateSpec extends Specification {
 
       "should miss a vertical ship at the when shooting below it" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(3, 4, 3, false))
+        val ships: List[Ship] = List(Ship(3, 4, 3, false))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 3)
@@ -236,7 +224,7 @@ class PlayerStateSpec extends Specification {
 
       "should miss a vertical ship at the when shooting above it" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(3, 4, 3, false))
+        val ships: List[Ship] = List(Ship(3, 4, 3, false))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(3, 7)
@@ -254,7 +242,7 @@ class PlayerStateSpec extends Specification {
       "should return 'Hit' and a new state with the attack position set to true when there is a ship that is not yet" +
         "completely sunk at that position" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(5, 5, 3, true))
+        val ships: List[Ship] = List(Ship(5, 5, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(5, 5)
@@ -272,7 +260,7 @@ class PlayerStateSpec extends Specification {
       "should return 'Sunk' and a new state with the attack position set to true when there is a ship that is completely " +
         "sunk (all its segments are marked as hit)" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(5, 5, 3, true))
+        val ships: List[Ship] = List(Ship(5, 5, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty(false, 10, 10)
         attackedSoFar.set(6, 5, true)
         attackedSoFar.set(7, 5, true)
@@ -291,7 +279,7 @@ class PlayerStateSpec extends Specification {
 
       "should return 'Miss' and a new state with the attack position set to true when there is no ship at the location" in {
         //Given
-        val ships: Seq[Ship] = Seq(Ship(0, 0, 3, true))
+        val ships: List[Ship] = List(Ship(0, 0, 3, true))
         val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty(false, 10, 10)
         val playerState = PlayerState(10, 10, ships, attackedSoFar)
         val attackPosition: Position = Position(5, 5)

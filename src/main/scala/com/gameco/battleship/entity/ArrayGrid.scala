@@ -28,6 +28,12 @@ case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: I
   }
 
   override def copyWithChange(position: Position, changeTo: A): Grid[A] = {
+    val newGrid: ArrayGrid[A] = deepCopy
+    newGrid.set(position.x, position.y, changeTo)
+    newGrid
+  }
+
+  def deepCopy: ArrayGrid[A] = {
     val newArray: Array[Array[A]] = Array.ofDim[A](height, width)
     for (r <- 0 until height) {
       val newRow: Array[A] = Array.ofDim[A](width)
@@ -35,9 +41,7 @@ case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: I
       newArray(r) = newRow
     }
 
-//    val copiedGrid: Array[Array[A]] = this.values.clone()
     val newGrid: ArrayGrid[A] = ArrayGrid(newArray, width, height)
-    newGrid.set(position.x, position.y, changeTo)
     newGrid
   }
 
@@ -69,5 +73,11 @@ case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: I
     } else {
       false
     }
+  }
+
+  override def copyWithChanges(gridChanges: Seq[(Int, Int, A)]): Grid[A] = {
+    val result = deepCopy
+    gridChanges.foreach(change => result.set(change._1, change._2, change._3))
+    result
   }
 }
