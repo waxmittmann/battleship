@@ -53,9 +53,7 @@ case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: I
   }
 
   override def equals(in: Any): Boolean = {
-    if (in.isInstanceOf[ArrayGrid[A]]) {
-      val otherGrid = in.asInstanceOf[ArrayGrid[A]]
-
+    def compareGrids(otherGrid: ArrayGrid[A]): Boolean = {
       if (width != otherGrid.width || height != otherGrid.height) {
         return false
       }
@@ -69,6 +67,11 @@ case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: I
       }
 
       true
+    }
+
+    if (in.isInstanceOf[ArrayGrid[A]]) {
+      val otherGrid = in.asInstanceOf[ArrayGrid[A]]
+      compareGrids(otherGrid)
     } else {
       false
     }
