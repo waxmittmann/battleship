@@ -15,7 +15,6 @@ object ArrayGrid {
   }
 }
 
-//case class ArrayGrid[A: ClassTag](initVal: A, width: Int, height: Int) extends Grid[A] {
 case class ArrayGrid[A: ClassTag](values: Array[Array[A]], width: Int, height: Int) extends Grid[A] {
 
   override def getWidth: Int = width

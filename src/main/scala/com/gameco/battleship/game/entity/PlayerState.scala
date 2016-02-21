@@ -11,7 +11,6 @@ case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attacke
 
   val playerGrid: Grid[Option[Ship]] = createGridFromShips()
 
-  //Todo: Test this
   private def createGridFromShips(): Grid[Option[Ship]] = {
     val grid = ArrayGrid.empty[Option[Ship]](None, width, height)
 

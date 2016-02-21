@@ -15,7 +15,7 @@ object BattleshipGame {
 }
 
 case class BattleshipGame(gameState: BattleshipGameState, isPlayerATurn: Boolean, isPlayerAWinner: Option[Boolean]) {
-  
+
   def takeTurnForCurrentPlayer(attackPosition: Position): Either[ActionError, ResultAndNewState] = {
     val (newStateCreator, opposingPlayerState) =
       if (isPlayerATurn) {
