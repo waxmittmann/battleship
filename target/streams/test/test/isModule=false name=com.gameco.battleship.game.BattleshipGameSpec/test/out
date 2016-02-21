@@ -3,15 +3,10 @@
 [0m[[0minfo[0m] [0mBattleship game should[0m
 [0m[[0minfo[0m] [0m  when taking a turn[0m
 [0m[[0minfo[0m] [0m    when there is an error[0m
-[0m[[31merror[0m] [0m      [33mx[0m should return out-of-bounds error when the hit position is outside the game dimensions[0m
-[0m[[31merror[0m] [0m       false (file:1)[0m
-[0m[[0minfo[0m] [0m[0m
-[0m[[31merror[0m] [0m      [33mx[0m should return already hit error when the hit position was attacked previously[0m
-[0m[[31merror[0m] [0m       false (file:1)[0m
-[0m[[0minfo[0m] [0m[0m
-[0m[[31merror[0m] [0m      [33mx[0m should return game over error when the game has already been won by a player[0m
-[0m[[31merror[0m] [0m       false (file:1)[0m
-[0m[[0minfo[0m] [0m[0m
+[0m[[0minfo[0m] [0m      [32m+[0m should return out-of-bounds error when the hit position is outside the game width[0m
+[0m[[0minfo[0m] [0m      [32m+[0m should return out-of-bounds error when the hit position is outside the game height[0m
+[0m[[0minfo[0m] [0m      [32m+[0m should return already hit error when the hit position was attacked previously[0m
+[0m[[0minfo[0m] [0m      [32m+[0m should return game over error when the game has already been won by a player[0m
 [0m[[0minfo[0m] [0m    when the move is legal[0m
 [0m[[31merror[0m] [0m      [33mx[0m for playerA and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerB[0m
 [0m[[31merror[0m] [0m       false (file:1)[0m
@@ -38,6 +33,6 @@
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0mTotal for specification BattleshipGameSpec[0m
-[0m[[0minfo[0m] [0m[36mFinished in 8 ms[0m[0m
-[0m[[0minfo[0m] [0m[36m[0m[36m10 examples, 10 failures, 0 error[0m[0m
+[0m[[0minfo[0m] [0m[36mFinished in 417 ms[0m[0m
+[0m[[0minfo[0m] [0m[36m[0m[36m11 examples, 7 failures, 0 error[0m[0m
 [0m[[0minfo[0m] [0m[0m

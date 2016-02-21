@@ -11,7 +11,7 @@ object PlayerPositionViewCreator {
       y <- 0 until height
       x <- 0 until width
     } yield {
-      if (playerState.isAttacked.get(x, y)) {
+      if (playerState.attackedPositions.get(x, y)) {
         if (playerState.playerShips.get(x, y).isDefined) {
           playerPosition.set(x, y, DamagedShip)
         } else {

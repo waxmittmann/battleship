@@ -32,7 +32,7 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
         Some(GameOver)
       } else if (attackPosition.x < 0 || attackPosition.x >= width || attackPosition.y < 0 || attackPosition.y >= height) {
         Some(OutsideBounds)
-      } else if (opposingPlayerState.isAttacked.get(attackPosition.x, attackPosition.y)) {
+      } else if (opposingPlayerState.isAttacked(attackPosition.x, attackPosition.y)) {
         Some(AlreadyHit)
       } else {
         None
