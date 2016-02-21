@@ -22,6 +22,12 @@ object BattleshipGameState {
 }
 
 case class BattleshipGameState(playerA: PlayerState, playerB: PlayerState) {
+  val width = playerA.width
+  val height = playerA.height
+
+  if (playerA.width != playerB.width || playerA.height != playerB.height) {
+    throw new RuntimeException("Widths do not match")
+  }
 
   def addShipForPlayerA(ship: Ship): Either[Unit, BattleshipGameState] = {
     val writer = (state: PlayerState) => this.copy(playerA = state)

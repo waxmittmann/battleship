@@ -27,7 +27,7 @@ class BattleshipGameSpec extends Specification with Mockito {
     currentPlayerState.height returns 10
 
     val battleshipGameState = BattleshipGameState(currentPlayerState, opposingPlayerState)
-    val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, None)
+    val battleshipGame = BattleshipGame(battleshipGameState, true, None)
   }
 
   "Battleship game" should {
@@ -67,7 +67,7 @@ class BattleshipGameSpec extends Specification with Mockito {
           val attackPosition = Position(5, 5)
           playerBState.isAttacked(attackPosition.x, attackPosition.y) returns true
           val battleshipGameState = BattleshipGameState(emptyState, playerBState)
-          val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, None)
+          val battleshipGame = BattleshipGame(battleshipGameState, true, None)
 
           //When
           val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
@@ -78,7 +78,7 @@ class BattleshipGameSpec extends Specification with Mockito {
 
         "should return game over error when the game has already been won by a player" in {
           val battleshipGameState = BattleshipGameState(emptyState, emptyState)
-          val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, Some(true))
+          val battleshipGame = BattleshipGame(battleshipGameState, true, Some(true))
 
           //When
           val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
@@ -101,7 +101,7 @@ class BattleshipGameSpec extends Specification with Mockito {
           }
         }
 
-        "then the new game should have the same height, width and current player state as the current game" in {
+        "then the new game should have the same current player state as the current game" in {
           new GameData {
             //When
             val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
@@ -109,8 +109,6 @@ class BattleshipGameSpec extends Specification with Mockito {
             //Then
             result.isRight must beTrue
             val (_, newGame) = result.right.get
-            newGame.width must beEqualTo(battleshipGame.width)
-            newGame.height must beEqualTo(battleshipGame.height)
             newGame.gameState.playerA must beEqualTo(currentPlayerState)
           }
         }

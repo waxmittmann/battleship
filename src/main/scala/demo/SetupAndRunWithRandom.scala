@@ -11,7 +11,7 @@ object SetupAndRunWithRandom {
   }
 
   def playGame(initialState: BattleshipGameState): Unit = {
-    val game = BattleshipGame.create(10, 10, initialState)
+    val game = BattleshipGame.create(5, 5, initialState)
 
     val moves =
       List(Position(0, 0),

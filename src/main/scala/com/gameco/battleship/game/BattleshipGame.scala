@@ -10,22 +10,12 @@ object BattleshipGame {
   type ResultAndNewState = (ActionResult, BattleshipGame)
 
   def create(width: Int, height: Int, gameState: BattleshipGameState): BattleshipGame = {
-    BattleshipGame(width, height, gameState, true, None)
+    BattleshipGame(gameState, true, None)
   }
 }
 
-case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameState, isPlayerATurn: Boolean, isPlayerAWinner: Option[Boolean]) {
-
-  //Kind of lame that we are enforcing this here; would be nicer if we encapsulated it with a builder to do the checks
-  if (gameState.playerA.width != width || gameState.playerA.height != height || gameState.playerB.width != width ||
-    gameState.playerB.height != height) {
-    throw new RuntimeException(s"Cannot build game when state dimensions do not match game dimensions:" +
-      s"Game dimensions: $width, $height\n" +
-      s"PlayerA dimensions: ${gameState.playerA.width}, ${gameState.playerA.height}\n" +
-      s"PlayerB dimensions: ${gameState.playerB.width}, ${gameState.playerB.height}"
-    )
-  }
-
+case class BattleshipGame(gameState: BattleshipGameState, isPlayerATurn: Boolean, isPlayerAWinner: Option[Boolean]) {
+  
   def takeTurnForCurrentPlayer(attackPosition: Position): Either[ActionError, ResultAndNewState] = {
     val (newStateCreator, opposingPlayerState) =
       if (isPlayerATurn) {
@@ -44,7 +34,7 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
     def isMoveError: Option[ActionError] = {
       if (isPlayerAWinner.isDefined) {
         Some(GameOver)
-      } else if (attackPosition.x < 0 || attackPosition.x >= width || attackPosition.y < 0 || attackPosition.y >= height) {
+      } else if (attackPosition.x < 0 || attackPosition.x >= gameState.width || attackPosition.y < 0 || attackPosition.y >= gameState.height) {
         Some(OutsideBounds)
       } else if (opposingPlayerState.isAttacked(attackPosition.x, attackPosition.y)) {
         Some(AlreadyHit)
@@ -74,11 +64,11 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
   }
 
   def getPlayerPosition(): Grid[GridStatus] = {
-    PlayerPositionViewCreator.getPosition(width, height, getCurrentPlayerState, false)
+    PlayerPositionViewCreator.getPosition(gameState.width, gameState.height, getCurrentPlayerState, false)
   }
 
   def getOpponentPosition(): Grid[GridStatus] = {
-    PlayerPositionViewCreator.getPosition(width, height, getCurrentOpponentState, true)
+    PlayerPositionViewCreator.getPosition(gameState.width, gameState.height, getCurrentOpponentState, true)
   }
 
   private def getCurrentPlayerState: PlayerState = {

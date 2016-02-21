@@ -9,7 +9,7 @@
 [0m[[0minfo[0m] [0m      [32m+[0m should return game over error when the game has already been won by a player[0m
 [0m[[0minfo[0m] [0m    when the move is legal[0m
 [0m[[0minfo[0m] [0m      [32m+[0m it should be the next player's turn in the new game[0m
-[0m[[0minfo[0m] [0m      [32m+[0m then the new game should have the same height, width and current player state as the current game[0m
+[0m[[0minfo[0m] [0m      [32m+[0m then the new game should have the same current player state as the current game[0m
 [0m[[0minfo[0m] [0m      [32m+[0m then a Right with the result and new opposing player state should be returned [0m
 [0m[[0minfo[0m] [0m  when completing a turn and checking for game-over status[0m
 [0m[[0minfo[0m] [0m    [32m+[0m return an empty option when at the end of a player's turn the opponent still has unsunk ships[0m
@@ -17,6 +17,6 @@
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0mTotal for specification BattleshipGameSpec[0m
-[0m[[0minfo[0m] [0m[36mFinished in 692 ms[0m[0m
+[0m[[0minfo[0m] [0m[36mFinished in 693 ms[0m[0m
 [0m[[0minfo[0m] [0m[36m[0m[36m9 examples, 0 failure, 0 error[0m[0m
 [0m[[0minfo[0m] [0m[0m

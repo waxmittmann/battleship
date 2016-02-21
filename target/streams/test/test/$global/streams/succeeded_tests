@@ -1,9 +1,9 @@
 #Successful Tests
-#Sun Feb 21 18:18:35 AEDT 2016
-com.gameco.battleship.game.entity.BattleshipGameStateSpec=1456039115693
-com.gameco.battleship.end2end.BattleshipEndToEndSpec=1456039115693
+#Sun Feb 21 18:23:04 AEDT 2016
+com.gameco.battleship.game.entity.BattleshipGameStateSpec=1456039384014
+com.gameco.battleship.end2end.BattleshipEndToEndSpec=1456039384014
 com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec=1456038640356
-com.gameco.battleship.game.entity.PlayerStateSpec=1456039115918
-com.gameco.battleship.game.helpers.RandomGameStateGenerator$Test=1456039115693
-com.gameco.battleship.game.BattleshipGameSpec=1456039115867
-com.gameco.battleship.entity.ArrayGridSpec=1456039115693
+com.gameco.battleship.game.entity.PlayerStateSpec=1456039384239
+com.gameco.battleship.game.helpers.RandomGameStateGenerator$Test=1456039384014
+com.gameco.battleship.game.BattleshipGameSpec=1456039384153
+com.gameco.battleship.entity.ArrayGridSpec=1456039384015
