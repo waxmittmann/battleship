@@ -1,12 +1,13 @@
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.PlayerStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.BattleshipGameSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.end2end.BattleshipEndToEndSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.PlayerStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.helpers.RandomGameStateGenerator$Test, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.BattleshipGameStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.entity.ArrayGridSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.end2end.BattleshipEndToEndSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.BattleshipGameSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mSummary for ScalaCheck not available.[0m
 [0m[[0mdebug[0m] [0mSummary for specs2 not available.[0m
-[0m[[0minfo[0m] [0mPassed: Total 33, Failed 0, Errors 0, Passed 33[0m
+[0m[[31merror[0m] [0mFailed: Total 34, Failed 1, Errors 0, Passed 33[0m
 [0m[[0mdebug[0m] [0mPassed tests:[0m
 [0m[[0mdebug[0m] [0m	com.gameco.battleship.game.entity.PlayerStateSpec[0m
 [0m[[0mdebug[0m] [0m	com.gameco.battleship.game.entity.BattleshipGameStateSpec[0m
@@ -14,3 +15,6 @@
 [0m[[0mdebug[0m] [0m	com.gameco.battleship.entity.ArrayGridSpec[0m
 [0m[[0mdebug[0m] [0m	com.gameco.battleship.end2end.BattleshipEndToEndSpec[0m
 [0m[[0mdebug[0m] [0m	com.gameco.battleship.game.BattleshipGameSpec[0m
+[0m[[31merror[0m] [0mFailed tests:[0m
+[0m[[31merror[0m] [0m	com.gameco.battleship.game.helpers.RandomGameStateGenerator$Test[0m
+[0m[[31merror[0m] [0m(test:[31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m
