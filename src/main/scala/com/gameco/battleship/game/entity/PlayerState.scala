@@ -35,9 +35,6 @@ case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attacke
   def setAttacked(attackPosition: Position): (ActionResult, PlayerState) = {
     val newState = this.copy(attackedPositions = attackedPositions.copyWithChange(attackPosition, true))
 
-//    println("Cur --\n" + attackedPositions.toString(i => if (i) "*" else ".") + "\nNew --\n" +
-//      newState.attackedPositions.toString(i => if (i) "*" else ".") + "\nEnd --")
-
     val actionResult: ActionResult = playerGrid.get(attackPosition.x, attackPosition.y).fold[ActionResult](Miss)(ship => {
       if (isShipSunk(ship, newState)) {
         Sunk
