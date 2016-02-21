@@ -4,8 +4,24 @@ import com.gameco.battleship.entity.Position
 import com.gameco.battleship.game.entity._
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
+import org.specs2.specification.Scope
 
 class BattleshipGameSpec extends Specification with Mockito {
+
+  trait GameData extends Scope {
+    val opposingPlayerState: PlayerState = mock[PlayerState]
+    val attackPosition = Position(5, 5)
+
+    opposingPlayerState.isAttacked(attackPosition.x, attackPosition.y) returns false
+
+    val newOpposingPlayerState = mock[PlayerState]
+    opposingPlayerState.setAttacked(attackPosition) returns ((Hit, newOpposingPlayerState))
+
+    val currentPlayerState: PlayerState = mock[PlayerState]
+
+    val battleshipGameState = BattleshipGameState(currentPlayerState, opposingPlayerState)
+    val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, None)
+  }
 
   "Battleship game" should {
     "when taking a turn" in {
@@ -66,8 +82,45 @@ class BattleshipGameSpec extends Specification with Mockito {
       }
 
       "when the move is legal" in {
-        "for playerA and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerB" in {
-          false
+        "it should be the next player's turn in the new game" in {
+          new GameData {
+            //When
+            val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
+
+            //Then
+            result.isRight must beTrue
+            val (_, newGame) = result.right.get
+            newGame.isPlayerATurn must beEqualTo(false)
+          }
+        }
+
+        "then the new game should have the same height, width and current player state as the current game" in {
+          new GameData {
+            //When
+            val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
+
+            //Then
+            result.isRight must beTrue
+            val (_, newGame) = result.right.get
+            newGame.width must beEqualTo(battleshipGame.width)
+            newGame.height must beEqualTo(battleshipGame.height)
+            newGame.gameState.playerA must beEqualTo(currentPlayerState)
+          }
+        }
+
+        "then a Right with the result and new opposing player state should be returned " in {
+          new GameData {
+            //When
+            val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
+            println("Result is: " + result)
+
+            //Then
+            result.isRight must beTrue
+            val (actionResult, newGame) = result.right.get
+            actionResult must beEqualTo(Hit)
+            newGame.gameState.playerA must beEqualTo(currentPlayerState)
+            newGame.gameState.playerB must beEqualTo(newOpposingPlayerState)
+          }
         }
 
         "for playerB and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerA" in {
