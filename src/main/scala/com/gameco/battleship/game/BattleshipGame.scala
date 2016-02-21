@@ -8,9 +8,23 @@ import com.gameco.battleship.game.helpers.PlayerPositionViewCreator
 object BattleshipGame {
   type ShipPositionOrientation = (Position, Boolean)
   type ResultAndNewState = (ActionResult, BattleshipGame)
+
+  def create(width: Int, height: Int, gameState: BattleshipGameState): BattleshipGame = {
+    BattleshipGame(width, height, gameState, true, None)
+  }
 }
 
 case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameState, isPlayerATurn: Boolean, isPlayerAWinner: Option[Boolean]) {
+
+  //Kind of lame that we are enforcing this here; would be nicer if we encapsulated it with a builder to do the checks
+  if (gameState.playerA.width != width || gameState.playerA.height != height || gameState.playerB.width != width ||
+    gameState.playerB.height != height) {
+    throw new RuntimeException(s"Cannot build game when state dimensions do not match game dimensions:" +
+      s"Game dimensions: $width, $height\n" +
+      s"PlayerA dimensions: ${gameState.playerA.width}, ${gameState.playerA.height}\n" +
+      s"PlayerB dimensions: ${gameState.playerB.width}, ${gameState.playerB.height}"
+    )
+  }
 
   def takeTurnForCurrentPlayer(attackPosition: Position): Either[ActionError, ResultAndNewState] = {
     val (newStateCreator, opposingPlayerState) =

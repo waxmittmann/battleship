@@ -1,7 +1,7 @@
 #Successful Tests
-#Sun Feb 21 16:34:12 AEDT 2016
-com.gameco.battleship.game.entity.BattleshipGameStateSpec=1456032852124
-com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec=1456032852124
-com.gameco.battleship.game.entity.PlayerStateSpec=1456032852351
-com.gameco.battleship.game.BattleshipGameSpec=1456032852277
-com.gameco.battleship.entity.ArrayGridSpec=1456032852124
+#Sun Feb 21 17:08:50 AEDT 2016
+com.gameco.battleship.game.entity.BattleshipGameStateSpec=1456034929939
+com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec=1456034929939
+com.gameco.battleship.game.entity.PlayerStateSpec=1456034930170
+com.gameco.battleship.game.BattleshipGameSpec=1456034930166
+com.gameco.battleship.entity.ArrayGridSpec=1456034929938

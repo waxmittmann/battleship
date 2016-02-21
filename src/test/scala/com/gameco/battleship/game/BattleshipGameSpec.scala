@@ -1,23 +1,30 @@
 package com.gameco.battleship.game
 
-import com.gameco.battleship.entity.Position
+import com.gameco.battleship.entity.{ArrayGrid, Position}
 import com.gameco.battleship.game.entity._
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
 
 class BattleshipGameSpec extends Specification with Mockito {
+  val emptyState = PlayerState(10, 10, List(), ArrayGrid.empty(false, 10, 10))
 
   trait GameData extends Scope {
-    val opposingPlayerState: PlayerState = mock[PlayerState]
     val attackPosition = Position(5, 5)
 
+    val opposingPlayerState: PlayerState = mock[PlayerState]
+    opposingPlayerState.width returns 10
+    opposingPlayerState.height returns 10
     opposingPlayerState.isAttacked(attackPosition.x, attackPosition.y) returns false
 
     val newOpposingPlayerState = mock[PlayerState]
+    newOpposingPlayerState.width returns 10
+    newOpposingPlayerState.height returns 10
     opposingPlayerState.setAttacked(attackPosition) returns ((Hit, newOpposingPlayerState))
 
     val currentPlayerState: PlayerState = mock[PlayerState]
+    currentPlayerState.width returns 10
+    currentPlayerState.height returns 10
 
     val battleshipGameState = BattleshipGameState(currentPlayerState, opposingPlayerState)
     val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, None)
@@ -29,39 +36,37 @@ class BattleshipGameSpec extends Specification with Mockito {
 
       "when there is an error" in {
         "should return out-of-bounds error when the hit position is outside the game width" in {
-          //Given
-          val width = 10
-          val battleshipGame = BattleshipGame(width, 10, mock[BattleshipGameState], true, None)
+          new GameData {
+            //When
+            val resultA = battleshipGame.takeTurnForCurrentPlayer(Position(-1, 5))
+            val resultB = battleshipGame.takeTurnForCurrentPlayer(Position(10, 5))
 
-          //When
-          val resultA = battleshipGame.takeTurnForCurrentPlayer(Position(-1, 5))
-          val resultB = battleshipGame.takeTurnForCurrentPlayer(Position(10, 5))
-
-          //Then
-          resultA must beEqualTo(Left(OutsideBounds))
-          resultB must beEqualTo(Left(OutsideBounds))
+            //Then
+            resultA must beEqualTo(Left(OutsideBounds))
+            resultB must beEqualTo(Left(OutsideBounds))
+          }
         }
 
         "should return out-of-bounds error when the hit position is outside the game height" in {
-          //Given
-          val height = 10
-          val battleshipGame = BattleshipGame(10, height, mock[BattleshipGameState], true, None)
+          new GameData {
+            //When
+            val resultA = battleshipGame.takeTurnForCurrentPlayer(Position(5, -1))
+            val resultB = battleshipGame.takeTurnForCurrentPlayer(Position(5, 10))
 
-          //When
-          val resultA = battleshipGame.takeTurnForCurrentPlayer(Position(5, -1))
-          val resultB = battleshipGame.takeTurnForCurrentPlayer(Position(5, 10))
-
-          //Then
-          resultA must beEqualTo(Left(OutsideBounds))
-          resultB must beEqualTo(Left(OutsideBounds))
+            //Then
+            resultA must beEqualTo(Left(OutsideBounds))
+            resultB must beEqualTo(Left(OutsideBounds))
+          }
         }
 
         "should return already hit error when the hit position was attacked previously" in {
           //Given
           val playerBState = mock[PlayerState]
+          playerBState.width returns 10
+          playerBState.height returns 10
           val attackPosition = Position(5, 5)
           playerBState.isAttacked(attackPosition.x, attackPosition.y) returns true
-          val battleshipGameState = BattleshipGameState(mock[PlayerState], playerBState)
+          val battleshipGameState = BattleshipGameState(emptyState, playerBState)
           val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, None)
 
           //When
@@ -72,7 +77,7 @@ class BattleshipGameSpec extends Specification with Mockito {
         }
 
         "should return game over error when the game has already been won by a player" in {
-          val battleshipGameState = BattleshipGameState(mock[PlayerState], mock[PlayerState])
+          val battleshipGameState = BattleshipGameState(emptyState, emptyState)
           val battleshipGame = BattleshipGame(10, 10, battleshipGameState, true, Some(true))
 
           //When

@@ -16,6 +16,8 @@ case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attacke
       if (x < 0 || x >= width || y < 0 || y >= height) {
         throw new RuntimeException(s"Ship $ship is outside bounds")
       }
+      if (grid.get(x, y).isDefined)
+        throw new RuntimeException(s"Cannot overlap ships at $x $y")
       grid.set(x, y, Some(ship))
     }
 
