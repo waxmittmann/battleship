@@ -34,7 +34,6 @@ case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attacked
 //      newState.attackedPositions.toString(i => if (i) "*" else ".") + "\nEnd --")
 
     val actionResult: ActionResult = playerGrid.get(attackPosition.x, attackPosition.y).fold[ActionResult](Miss)(ship => {
-      println("Testing ship sunk")
       if (isShipSunk(ship, newState)) {
         Sunk
       } else {
@@ -61,10 +60,8 @@ case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attacked
   private def existsForShip[A](ship: Ship, test: (Int, Int) => Boolean): Boolean = {
     doForShip(ship, (x: Int, y: Int, _: Ship) => {
       if (test(x, y)) {
-        println(s"Tested at $x, $y, true")
         Some(true)
       } else {
-        println(s"Tested at $x, $y, false")
         None
       }
     }).getOrElse(false)

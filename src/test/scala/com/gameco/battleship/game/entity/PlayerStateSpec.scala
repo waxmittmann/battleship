@@ -20,7 +20,30 @@ class PlayerStateSpec extends Specification {
 //    }
 
     "isAttacked" in {
-      false
+      "should return 'true' if the grid has already been attacked at that location" in {
+        val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
+        attackedSoFar.set(2, 3, true)
+        val playerState = PlayerState(10, 10, Seq(), attackedSoFar)
+        val attackPosition: Position = Position(2, 3)
+
+        //When
+        val result = playerState.isAttacked(attackPosition.x, attackPosition.y)
+
+        //Then
+        result must beTrue
+      }
+
+      "should return 'false' if the grid has not yet been attacked at that location" in {
+        val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
+        val playerState = PlayerState(10, 10, Seq(), attackedSoFar)
+        val attackPosition: Position = Position(2, 3)
+
+        //When
+        val result = playerState.isAttacked(attackPosition.x, attackPosition.y)
+
+        //Then
+        result must beFalse
+      }
     }
 
     "setAttacked" in {
