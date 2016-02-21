@@ -122,18 +122,6 @@ class BattleshipGameSpec extends Specification with Mockito {
             newGame.gameState.playerB must beEqualTo(newOpposingPlayerState)
           }
         }
-
-        "for playerB and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerA" in {
-          false
-        }
-
-        "and a ship is sunk, it should return 'Sunk' and a game with updated state showing the hit" in {
-          false
-        }
-
-        "and it is a miss, it should return 'Miss' and a game with updated state showing the miss" in {
-          false
-        }
       }
     }
 
