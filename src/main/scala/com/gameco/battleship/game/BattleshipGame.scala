@@ -50,7 +50,13 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
                            playerStateWriter: (PlayerState) => BattleshipGameState): Right[Nothing, (ActionResult, BattleshipGame)] = {
     val result: (ActionResult, PlayerState) = opposingPlayerState.setAttacked(attackPosition)
     val newState: BattleshipGameState = playerStateWriter(result._2)
-    Right((result._1, this.copy(gameState = newState, isPlayerATurn = !isPlayerATurn)))
+    val isPlayerAWinner: Option[Boolean] = if (result._2.isAllSunk()) {
+        Some(isPlayerATurn)
+      } else {
+        None
+      }
+
+    Right((result._1, this.copy(gameState = newState, isPlayerATurn = !isPlayerATurn, isPlayerAWinner = isPlayerAWinner)))
   }
 
   def getPlayerPosition(): Grid[GridStatus] = {

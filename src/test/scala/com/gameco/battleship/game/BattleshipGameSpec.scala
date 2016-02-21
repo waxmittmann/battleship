@@ -24,7 +24,9 @@ class BattleshipGameSpec extends Specification with Mockito {
   }
 
   "Battleship game" should {
+
     "when taking a turn" in {
+
       "when there is an error" in {
         "should return out-of-bounds error when the hit position is outside the game width" in {
           //Given
@@ -125,17 +127,35 @@ class BattleshipGameSpec extends Specification with Mockito {
       }
     }
 
-    "when checking for game-over status" in {
-      "return an empty option when both players have ships remaining" in {
-        false
+    "when completing a turn and checking for game-over status" in {
+      "return an empty option when at the end of a player's turn the opponent still has unsunk ships" in {
+        new GameData {
+          //Given
+          opposingPlayerState.isAllSunk() returns false
+
+          //When
+          val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
+
+          //Then
+          result.isRight must beTrue
+          val (_, newGame) = result.right.get
+          newGame.isPlayerAWinner must beEqualTo(None)
+        }
       }
 
-      "return victory for PlayerA when all of PlayerB's ships have been sunk" in {
-        false
-      }
+      "return victory for the player when all of the opponent's ships are sunk at the end of the turn" in {
+        new GameData {
+          //Given
+          newOpposingPlayerState.isAllSunk() returns true
 
-      "return victory for PlayerB when all of PlayerA's ships have been sunk" in {
-        false
+          //When
+          val result = battleshipGame.takeTurnForCurrentPlayer(Position(5, 5))
+
+          //Then
+          result.isRight must beTrue
+          val (_, newGame) = result.right.get
+          newGame.isPlayerAWinner must beEqualTo(Some(true))
+        }
       }
     }
   }
