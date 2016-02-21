@@ -12,6 +12,10 @@ and returned as a new game after each turn.
 Test coverage is getting there, but not as thorough as I would like. I would also have liked to implement a game runner
 to encapsulate the transitioning from state to state (currently done via a 'foldLeft' in the end-to-end test and demos).
 
+To the use of Option/Either and exceptions, I'm not quite sure I'm happy with the balance but the idea was to throw
+exceptions for 'unhandleable' errors, like errors during game setup, and to use 'either' for potentially handleable
+errors like the player attempting to hit a previously hit field.
+
 Structure
 -----------
 > BattleshipGame
