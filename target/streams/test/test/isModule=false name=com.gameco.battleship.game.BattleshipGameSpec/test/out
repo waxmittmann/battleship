@@ -1,10 +1,43 @@
 [0m[[0minfo[0m] [0mBattleshipGameSpec[0m
 [0m[[0minfo[0m] [0m[0m
-[0m[[0minfo[0m] [0mwow should[0m
-[0m[[0minfo[0m] [0m  [32m+[0m pickle [0m
+[0m[[0minfo[0m] [0mBattleship game should[0m
+[0m[[0minfo[0m] [0m  when taking a turn[0m
+[0m[[0minfo[0m] [0m    when there is an error[0m
+[0m[[31merror[0m] [0m      [33mx[0m should return out-of-bounds error when the hit position is outside the game dimensions[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m      [33mx[0m should return already hit error when the hit position was attacked previously[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m      [33mx[0m should return game over error when the game has already been won by a player[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[0minfo[0m] [0m    when the move is legal[0m
+[0m[[31merror[0m] [0m      [33mx[0m for playerA and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerB[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m      [33mx[0m for playerB and a ship is hit, it should return 'Hit' and a game with updated state showing the hit on playerA[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m      [33mx[0m and a ship is sunk, it should return 'Sunk' and a game with updated state showing the hit[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m      [33mx[0m and it is a miss, it should return 'Miss' and a game with updated state showing the miss[0m
+[0m[[31merror[0m] [0m       false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[0minfo[0m] [0m  when checking for game-over status[0m
+[0m[[31merror[0m] [0m    [33mx[0m return an empty option when both players have ships remaining[0m
+[0m[[31merror[0m] [0m     false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m    [33mx[0m return victory for PlayerA when all of PlayerB's ships have been sunk[0m
+[0m[[31merror[0m] [0m     false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[31merror[0m] [0m    [33mx[0m return victory for PlayerB when all of PlayerA's ships have been sunk[0m
+[0m[[31merror[0m] [0m     false (file:1)[0m
+[0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0m[0m
 [0m[[0minfo[0m] [0mTotal for specification BattleshipGameSpec[0m
 [0m[[0minfo[0m] [0m[36mFinished in 8 ms[0m[0m
-[0m[[0minfo[0m] [0m[36m[0m[36m1 example, 0 failure, 0 error[0m[0m
+[0m[[0minfo[0m] [0m[36m[0m[36m10 examples, 10 failures, 0 error[0m[0m
 [0m[[0minfo[0m] [0m[0m

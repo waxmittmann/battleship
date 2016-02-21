@@ -1,9 +1,9 @@
 package com.gameco.battleship.game
 
 import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
+import com.gameco.battleship.game.BattleshipGame.ResultAndNewState
 import com.gameco.battleship.game.entity._
-import com.gameco.battleship.game.BattleshipGame.{ResultAndNewState, ShipPositionOrientation}
-import com.gameco.battleship.game.entity._
+import com.gameco.battleship.game.helpers.PlayerPositionViewCreator
 
 object BattleshipGame {
   type ShipPositionOrientation = (Position, Boolean)
@@ -21,6 +21,7 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
         val stateCreator = (playerState: PlayerState) => gameState.copy(playerA = playerState)
         (stateCreator, gameState.playerA)
       }
+
     attemptToTakeTurn(attackPosition, opposingPlayerState, newStateCreator)
   }
 
@@ -39,13 +40,13 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
     }
 
     isMoveError.fold[Either[ActionError, ResultAndNewState]] {
-      takeTurnForCurrentPlayer(attackPosition, opposingPlayerState, playerStateWriter)
+      takeTurn(attackPosition, opposingPlayerState, playerStateWriter)
     } {
       error => Left(error)
     }
   }
 
-  private def takeTurnForCurrentPlayer(attackPosition: Position, opposingPlayerState: PlayerState,
+  private def takeTurn(attackPosition: Position, opposingPlayerState: PlayerState,
                            playerStateWriter: (PlayerState) => BattleshipGameState): Right[Nothing, (ActionResult, BattleshipGame)] = {
     val result: (ActionResult, PlayerState) = opposingPlayerState.setAttacked(attackPosition)
     val newState: BattleshipGameState = playerStateWriter(result._2)
@@ -53,36 +54,11 @@ case class BattleshipGame(width: Int, height: Int, gameState: BattleshipGameStat
   }
 
   def getPlayerPosition(): Grid[GridStatus] = {
-    getPosition(getCurrentPlayerState, false)
+    PlayerPositionViewCreator.getPosition(width, height, getCurrentPlayerState, false)
   }
 
   def getOpponentPosition(): Grid[GridStatus] = {
-    getPosition(getCurrentOpponentState, true)
-  }
-
-  private def getPosition(playerState: PlayerState, hideUndamagedShips: Boolean): Grid[GridStatus] = {
-    val playerPosition = ArrayGrid[GridStatus](Sea, width, height)
-
-    for {
-      y <- 0 until height
-      x <- 0 until width
-    } yield {
-      if (playerState.isAttacked.get(x, y)) {
-        if (playerState.playerShips.get(x, y).isDefined) {
-          playerPosition.set(x, y, DamagedShip)
-        } else {
-          playerPosition.set(x, y, AttackedSea)
-        }
-      } else {
-        if (!hideUndamagedShips && playerState.playerShips.get(x, y).isDefined) {
-          playerPosition.set(x, y, UndamagedShip)
-        } else {
-          playerPosition.set(x, y, Sea)
-        }
-      }
-    }
-
-    playerPosition
+    PlayerPositionViewCreator.getPosition(width, height, getCurrentOpponentState, true)
   }
 
   private def getCurrentPlayerState: PlayerState = {
