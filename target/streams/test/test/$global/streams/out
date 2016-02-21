@@ -1,9 +1,9 @@
 [0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.PlayerStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.entity.ArrayGridSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.end2end.BattleshipEndToEndSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.BattleshipGameStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
-[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.BattleshipGameSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.end2end.BattleshipEndToEndSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.helpers.PlayerPositionViewCreatorSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.game.entity.BattleshipGameStateSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
+[0m[[0mdebug[0m] [0mRunning TaskDef(com.gameco.battleship.entity.ArrayGridSpec, specs2 Specification fingerprint, false, [SuiteSelector])[0m
 [0m[[0mdebug[0m] [0mSummary for ScalaCheck not available.[0m
 [0m[[0mdebug[0m] [0mSummary for specs2 not available.[0m
 [0m[[0minfo[0m] [0mPassed: Total 33, Failed 0, Errors 0, Passed 33[0m

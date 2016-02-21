@@ -2,6 +2,9 @@ package com.gameco.battleship.game.entity
 
 import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
 
+case class OverlappingShipsException(message: String) extends RuntimeException
+case class OutOfBoundsShipException(message: String) extends RuntimeException
+
 case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attackedPositions: Grid[Boolean]) {
   if (attackedPositions.getHeight != height || attackedPositions.getWidth != width)
     throw new RuntimeException("Grid dimensions do not match state dimensions")
@@ -14,10 +17,10 @@ case class PlayerState(width: Int, height: Int, playerShips: List[Ship], attacke
 
     val setGridPositionToShip = (x: Int, y: Int, ship: Ship) => {
       if (x < 0 || x >= width || y < 0 || y >= height) {
-        throw new RuntimeException(s"Ship $ship is outside bounds")
+        throw new OutOfBoundsShipException(s"Ship $ship is outside bounds")
       }
       if (grid.get(x, y).isDefined)
-        throw new RuntimeException(s"Cannot overlap ships at $x $y")
+        throw new OverlappingShipsException(s"Cannot overlap ships at $x $y")
       grid.set(x, y, Some(ship))
     }
 

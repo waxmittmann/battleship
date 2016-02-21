@@ -16,8 +16,13 @@ object SetupAndRun {
       Ship(1, 2, 3, true),
       Ship(1, 2, 3, true))
 
-    val initialState = BattleshipGameState.create(10, 10, playerAShips, playerBShips)
+    BattleshipGameState.create(10, 10, playerAShips, playerBShips).fold(
+      error => s"Could not create game: $error",
+      playGame(_)
+    )
+  }
 
+  def playGame(initialState: BattleshipGameState): Unit = {
     val game = BattleshipGame.create(10, 10, initialState)
 
     val moves =
