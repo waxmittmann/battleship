@@ -9,6 +9,39 @@ class PlayerStateSpec extends Specification {
 
   "Player state " should {
 
+    "isAllSunk" should {
+      "return true if all ships are hit" in {
+        //Given
+        val ships: Seq[Ship] = Seq(Ship(6, 2, 3, true))
+        val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
+        attackedSoFar.set(6, 2, true)
+        attackedSoFar.set(7, 2, true)
+        attackedSoFar.set(8, 2, true)
+        val playerState = PlayerState(10, 10, ships, attackedSoFar)
+
+        //When
+        val result = playerState.isAllSunk()
+
+        //Then
+        result must beTrue
+      }
+
+      "return false if all some ships are not hit" in {
+        //Given
+        val ships: Seq[Ship] = Seq(Ship(6, 2, 3, true))
+        val attackedSoFar: ArrayGrid[Boolean] = ArrayGrid.empty[Boolean](false, 10, 10)
+        attackedSoFar.set(6, 2, true)
+        attackedSoFar.set(8, 2, true)
+        val playerState = PlayerState(10, 10, ships, attackedSoFar)
+
+        //When
+        val result = playerState.isAllSunk()
+
+        //Then
+        result must beFalse
+      }
+    }
+
 //    "creation" in {
 //      "should fail if the attack grid dimensions do not match the state dimensions" in {
 //        false
