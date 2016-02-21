@@ -1,11 +1,26 @@
 package com.gameco.battleship.game.entity
 
 import com.gameco.battleship.entity.{Position, ArrayGrid, Grid}
+import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 
-class PlayerStateSpec extends Specification {
+class PlayerStateSpec extends Specification with Mockito {
 
   "Player state " should {
+
+    "creation should fail if" in {
+      "should throw out-of bound exception if ship is out of bounds" in {
+        val ships: List[Ship] = List(Ship(11, 2, 3, true))
+
+        PlayerState(10, 10, ships, ArrayGrid.empty[Boolean](false, 10, 10)) must throwA[OutOfBoundsShipException]
+      }
+
+      "should throw overlap exception if ship overlaps other ship" in {
+        val ships: List[Ship] = List(Ship(0, 2, 3, true), Ship(0, 1, 3, false))
+
+        PlayerState(10, 10, ships, ArrayGrid.empty[Boolean](false, 10, 10)) must throwA[OverlappingShipsException]
+      }
+    }
 
     "isAllSunk" should {
       "return true if all ships are hit" in {

@@ -1,6 +1,6 @@
 package com.gameco.battleship.game
 
-import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
+import com.gameco.battleship.entity.{Grid, Position}
 import com.gameco.battleship.game.BattleshipGame.ResultAndNewState
 import com.gameco.battleship.game.entity._
 import com.gameco.battleship.game.helpers.PlayerPositionViewCreator
