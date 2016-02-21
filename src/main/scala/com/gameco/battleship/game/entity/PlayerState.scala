@@ -2,17 +2,22 @@ package com.gameco.battleship.game.entity
 
 import com.gameco.battleship.entity.{ArrayGrid, Grid, Position}
 
-//case class PlayerState(playerShips: Seq[Ship], playerGrid: Grid[Option[Ship]], attackedPositions: Grid[Boolean]) {
 case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attackedPositions: Grid[Boolean]) {
+  val playerGrid: Grid[Option[Ship]] = createGridFromShips()
 
   def createGridFromShips(): Grid[Option[Ship]] = {
     val grid = ArrayGrid[Option[Ship]](None, width, height)
-    for (ship <- playerShips) {
 
+    val setGridPositionToShip = (x: Int, y: Int, ship: Ship) => {
+      grid.set(x, y, Some(ship))
     }
-  }
 
-  val playerGrid: Grid[Option[Ship]] = createGridFromShips()
+    for (ship <- playerShips) {
+      sideEffectForShip(ship, setGridPositionToShip)
+    }
+
+    grid
+  }
 
   def isAttacked(x: Int, y: Int): Boolean = attackedPositions.get(x, y)
 
@@ -29,27 +34,8 @@ case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attacked
   }
 
   private def isShipSunk(ship: Ship, playerState: PlayerState): Boolean = {
-    val hasUnattackedPosition = exists(ship, !playerState.attackedPositions.get(_, _))
+    val hasUnattackedPosition = existsForShip(ship, !playerState.attackedPositions.get(_, _))
     !hasUnattackedPosition
-
-//    for (l <- 0 to ship.size) {
-//      if (ship.isHorizontal && !playerState.attackedPositions.get(ship.x + l, ship.y)) {
-//        return false
-//      } else if (!ship.isHorizontal && !playerState.attackedPositions.get(ship.x, ship.y + l)) {
-//        return false
-//      }
-//    }
-//    return true
-  }
-
-  private def exists[A](ship: Ship, test: (Int, Int) => Boolean): Boolean = {
-    for (l <- 0 to ship.size) {
-      if ((ship.isHorizontal && test(ship.x + l, ship.y)) ||
-        (!ship.isHorizontal && test(ship.x, ship.y + l))) {
-        return true
-      }
-    }
-    return false
   }
 
   def isAllSunk(): Boolean = {
@@ -57,19 +43,39 @@ case class PlayerState(width: Int, height: Int, playerShips: Seq[Ship], attacked
       if (!isShipSunk(ship, this)) {
         return false
       }
-
-//      if (exists(ship, isAttacked(_, _))) {
-//        return false
-//      }
-
-//      for (l <- 0 to ship.size) {
-//        exists(ship, !isAttacked(_, _))
-//        if ((ship.isHorizontal && !isAttacked(ship.x + l, ship.y)) ||
-//            (!ship.isHorizontal && !isAttacked(ship.x, ship.y + l))) {
-//          return false
-//        }
-//      }
     }
     true
+  }
+
+  private def existsForShip[A](ship: Ship, test: (Int, Int) => Boolean): Boolean = {
+    doForShip(ship, (x: Int, y: Int, _: Ship) => {
+      if (test(x, y)) {
+        Some(true)
+      } else {
+        None
+      }
+    }).getOrElse(false)
+  }
+
+  private def sideEffectForShip[A](ship: Ship, sideEffectF: (Int, Int, Ship) => Unit): Unit = {
+    doForShip(ship, (x: Int, y: Int, ship: Ship) => {
+      sideEffectF(x, y, ship)
+      None
+    })
+  }
+
+  private def doForShip[A](ship: Ship, action: (Int, Int, Ship) => Option[A]): Option[A] = {
+    for (l <- 0 to ship.size) {
+      val result = if (ship.isHorizontal) {
+        action(ship.x + l, ship.y, ship)
+      } else {
+        action(ship.x, ship.y + l, ship)
+      }
+
+      if (result.isDefined) {
+        return result
+      }
+    }
+    None
   }
 }
