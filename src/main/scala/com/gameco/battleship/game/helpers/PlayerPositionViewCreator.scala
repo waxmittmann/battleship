@@ -5,7 +5,7 @@ import com.gameco.battleship.game.entity._
 
 object PlayerPositionViewCreator {
   def getPosition(width: Int, height: Int, playerState: PlayerState, hideUndamagedShips: Boolean): Grid[GridStatus] = {
-    val playerPosition = ArrayGrid[GridStatus](Sea, width, height)
+    val playerPosition = ArrayGrid.empty[GridStatus](Sea, width, height)
 
     for {
       y <- 0 until height
